@@ -13,7 +13,8 @@ const connectDB = require('./config/database');
 connectDB();
 
 // Routes
-app.use('/api/contacts', require('./routes/contactsRoutes'));
+app.use('/api/contacts', require('./routes/contactRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 
 // Start server
 app.listen(port, () => console.log(`Server listening on port ${port}`));

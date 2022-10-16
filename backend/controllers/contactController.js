@@ -1,11 +1,12 @@
 const asyncHandler = require('express-async-handler');
 const Contact = require('../models/contactModel');
+const User = require('../models/userModel');
 
 // @desc    Get all contacts
 // @route   GET /api/contacts
 // @access  Private
 const getContacts = asyncHandler(async (req, res) => {
-   const contact = await Contact.find();
+   const contact = await Contact.find({ user: req.user.id });
    res.status(200).json(contact);
 });
 
@@ -18,7 +19,10 @@ const saveContact = asyncHandler(async (req, res) => {
       throw new Error('Please provied a contact field');
    }
 
-   const contact = await Contact.create({ contact: req.body.contact });
+   const contact = await Contact.create({
+      user: req.user.id,
+      contact: req.body.contact,
+   });
    res.status(200).json(contact);
 });
 
@@ -32,8 +36,21 @@ const updateContact = asyncHandler(async (req, res) => {
       throw new Error('Contact not found');
    }
 
-   const contactUpdated = await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true });
-   res.status(200).json(contactUpdated);
+   const user = await User.findById(req.user.id);
+
+   // Check for user
+   if (!user) {
+      res.status(401);
+      throw new Error('User not found');
+   }
+
+   if (contact.user.toString() !== user.id) {
+      res.status(401);
+      throw new Error('User not authorized');
+   }
+
+   const contactUpdate = await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true });
+   res.status(200).json(contactUpdate);
 });
 
 // @desc    Delete a contact
@@ -44,6 +61,19 @@ const deleteContact = asyncHandler(async (req, res) => {
    if (!contact) {
       res.status(400);
       throw new Error('Contact not found');
+   }
+
+   const user = await User.findById(req.user.id);
+
+   // Check for user
+   if (!user) {
+      res.status(401);
+      throw new Error('User not found');
+   }
+
+   if (contact.user.toString() !== user.id) {
+      res.status(401);
+      throw new Error('User not authorized');
    }
 
    await contact.remove();
