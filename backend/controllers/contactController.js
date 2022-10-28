@@ -36,15 +36,13 @@ const updateContact = asyncHandler(async (req, res) => {
       throw new Error('Contact not found');
    }
 
-   const user = await User.findById(req.user.id);
-
    // Check for user
-   if (!user) {
+   if (!req.user) {
       res.status(401);
       throw new Error('User not found');
    }
 
-   if (contact.user.toString() !== user.id) {
+   if (contact.user.toString() !== req.user.id) {
       res.status(401);
       throw new Error('User not authorized');
    }
@@ -63,15 +61,13 @@ const deleteContact = asyncHandler(async (req, res) => {
       throw new Error('Contact not found');
    }
 
-   const user = await User.findById(req.user.id);
-
    // Check for user
-   if (!user) {
+   if (!req.user) {
       res.status(401);
       throw new Error('User not found');
    }
 
-   if (contact.user.toString() !== user.id) {
+   if (contact.user.toString() !== req.user.id) {
       res.status(401);
       throw new Error('User not authorized');
    }

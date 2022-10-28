@@ -16,7 +16,7 @@ const registerUser = asyncHandler(async (req, res) => {
    // Check if user exists
    const userExists = await User.findOne({ email });
    if (userExists) {
-      res.status(401);
+      res.status(400);
       throw new Error('User already exists');
    }
 
@@ -26,14 +26,14 @@ const registerUser = asyncHandler(async (req, res) => {
 
    const user = await User.create({ name, email, password: hashedPassword });
    if (user) {
-      res.status(200).json({
+      res.status(201).json({
          _id: user.id,
          name,
          email,
          token: generateToken(user.id),
       });
    } else {
-      res.status(401);
+      res.status(400);
       throw new Error('Invalid credentials');
    }
 });
@@ -43,10 +43,6 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Private
 const loginUser = asyncHandler(async (req, res) => {
    const { email, password } = req.body;
-   if (!email || !password) {
-      res.status(400);
-      throw new Error('Please add required fields');
-   }
 
    const user = await User.findOne({ email });
    if (user && (await bcrypt.compare(password, user.password))) {
