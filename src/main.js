@@ -33,7 +33,7 @@ app.use(express.json());
 // Routes
 app.use(require('./routes/index'));
 app.use(require('./routes/auth'));
-app.use('/links', require('./routes/links'));
+app.use('/contacts', require('./routes/contacts'));
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));
