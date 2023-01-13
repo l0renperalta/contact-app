@@ -14,7 +14,13 @@ router.post('/create', async (req, res) => {
    }
    const newContact = { contact, number, description };
    await pool.query('INSERT INTO contacts set ?', [newContact]);
-   res.send('saved');
+   res.redirect('/contacts');
+});
+
+router.get('/', async (req, res) => {
+   const contacts = await pool.query('SELECT * FROM contacts');
+   console.log(contacts);
+   res.render('contacts/list', { contacts: contacts });
 });
 
 module.exports = router;
