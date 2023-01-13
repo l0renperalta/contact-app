@@ -1,8 +1,8 @@
 module.exports = {
    database: {
       host: 'localhost',
-      user: 'admin',
-      password: 'admin',
+      user: 'root',
+      password: false,
       database: 'database_contacts',
    },
 };

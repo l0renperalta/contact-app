@@ -7,8 +7,9 @@ const app = express();
 
 // Settings
 app.set('port', process.env.PORT || 5000);
+app.set('views', path.join(__dirname, 'views'));
 app.engine(
-   'hbs',
+   '.hbs',
    engine({
       defaultLayout: 'main',
       layoutsDir: path.join(app.get('views'), 'layouts'),
@@ -17,7 +18,6 @@ app.engine(
       extname: '.hbs',
    })
 );
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // Middlewares
