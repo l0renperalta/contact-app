@@ -1,0 +1,26 @@
+<div class='container p-4'>
+   <div class='row'>
+      <div class='col-md-4'>
+         <div class='card'>
+            <div class='card-body'>
+               <h3>Edit</h3>
+               <form action='/contacts/edit/{{values.id}}' method='POST'>
+                  <p></p>
+                  <div class='form-group'>
+                     <input type='text' name='contact' placeholder='contact' class='form-control' value='{{values.contact}}' autofocus />
+                  </div>
+                  <div class='form-group'>
+                     <input type='number' name='number' placeholder='number' class='form-control' value='{{values.number}}' />
+                  </div>
+                  <div class='form-group'>
+                     <input type='text' name='description' placeholder='description' class='form-control' value='{{values.description}}' />
+                  </div>
+                  <div class='form-group'>
+                     <button class='btn btn-success btn-block'>Save</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

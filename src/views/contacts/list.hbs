@@ -1,6 +1,5 @@
 <div class='container p-4'>
    <div class='row'>
-
       {{#each contacts}}
          <div class='col-md-3'>
             <div class='card text-center'>
@@ -13,9 +12,16 @@
                   <h5>number: {{number}}</h5>
                   <h5>description: {{description}}</h5>
                   <p>{{timeago created_at}}</p>
-                  <button class='btn btn-danger'>Delete</button>
-                  <button class='btn btn-secondary'>Edit</button>
+                  <a href='/contacts/edit/{{id}}' class='btn btn-secondary'>Edit</a>
+                  <a href='/contacts/delete/{{id}}' class='btn btn-danger'>Delete</a>
                </div>
+            </div>
+         </div>
+      {{else}}
+         <div class='col-md-4 mx-auto'>
+            <div class='card card-body text-center'>
+               <p>No contacts registered</p>
+               <a href='/contacts/create' class='btn btn-success'>Create Contact</a>
             </div>
          </div>
       {{/each}}

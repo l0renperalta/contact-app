@@ -19,8 +19,32 @@ router.post('/create', async (req, res) => {
 
 router.get('/', async (req, res) => {
    const contacts = await pool.query('SELECT * FROM contacts');
-   console.log(contacts);
    res.render('contacts/list', { contacts: contacts });
+});
+
+router.get('/edit/:id', async (req, res) => {
+   const { id } = req.params;
+   const values = await pool.query('SELECT * FROM contacts WHERE id = ?', id);
+   console.log(values[0]);
+   res.render('contacts/edit', { values: values[0] });
+});
+
+router.post('/edit/:id', async (req, res) => {
+   const { id } = req.params;
+   const { contact, number, description } = req.body;
+   const newValues = {
+      contact,
+      number,
+      description,
+   };
+   await pool.query('UPDATE contacts set ? WHERE id = ?', [newValues, id]);
+   res.redirect('/contacts');
+});
+
+router.get('/delete/:id', async (req, res) => {
+   const { id } = req.params;
+   await pool.query('DELETE FROM contacts WHERE id = ?', id);
+   res.redirect('/contacts');
 });
 
 module.exports = router;
