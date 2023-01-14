@@ -7,13 +7,32 @@
                <form action='/contacts/edit/{{values.id}}' method='POST'>
                   <p></p>
                   <div class='form-group'>
-                     <input type='text' name='contact' placeholder='contact' class='form-control' value='{{values.contact}}' autofocus />
+                     <input
+                        type='text'
+                        name='contact'
+                        placeholder='contact'
+                        class='form-control mt-3 mb-3'
+                        value='{{values.contact}}'
+                        autofocus
+                     />
                   </div>
                   <div class='form-group'>
-                     <input type='number' name='number' placeholder='number' class='form-control' value='{{values.number}}' />
+                     <input
+                        type='number'
+                        name='number'
+                        placeholder='number'
+                        class='form-control mt-3 mb-3'
+                        value='{{values.number}}'
+                     />
                   </div>
                   <div class='form-group'>
-                     <input type='text' name='description' placeholder='description' class='form-control' value='{{values.description}}' />
+                     <input
+                        type='text'
+                        name='description'
+                        placeholder='description'
+                        class='form-control mt-3 mb-3'
+                        value='{{values.description}}'
+                     />
                   </div>
                   <div class='form-group'>
                      <button class='btn btn-success btn-block'>Save</button>

@@ -3,6 +3,12 @@ const router = express.Router();
 
 const pool = require('../database');
 
+// List all contacts
+router.get('/', async (req, res) => {
+   const contacts = await pool.query('SELECT * FROM contacts');
+   res.render('contacts/list', { contacts: contacts });
+});
+
 router.get('/create', (req, res) => {
    res.render('contacts/create');
 });
@@ -14,12 +20,8 @@ router.post('/create', async (req, res) => {
    }
    const newContact = { contact, number, description };
    await pool.query('INSERT INTO contacts set ?', [newContact]);
+   req.flash('success', 'Contact created!');
    res.redirect('/contacts');
-});
-
-router.get('/', async (req, res) => {
-   const contacts = await pool.query('SELECT * FROM contacts');
-   res.render('contacts/list', { contacts: contacts });
 });
 
 router.get('/edit/:id', async (req, res) => {
@@ -38,12 +40,14 @@ router.post('/edit/:id', async (req, res) => {
       description,
    };
    await pool.query('UPDATE contacts set ? WHERE id = ?', [newValues, id]);
+   req.flash('success', 'Contact edited!');
    res.redirect('/contacts');
 });
 
 router.get('/delete/:id', async (req, res) => {
    const { id } = req.params;
    await pool.query('DELETE FROM contacts WHERE id = ?', id);
+   req.flash('success', 'Contactd deleted!');
    res.redirect('/contacts');
 });
 
