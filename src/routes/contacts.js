@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../authMiddleware');
 
 const pool = require('../database');
 
 // List all contacts
-router.get('/', async (req, res) => {
-   const contacts = await pool.query('SELECT * FROM contacts');
+router.get('/', authMiddleware, async (req, res) => {
+   const userId = req.session.user_id;
+   const contacts = await pool.query('SELECT * FROM contacts WHERE user_id = ?', [userId]);
    res.render('contacts/list', { contacts: contacts });
 });
 
@@ -18,13 +20,13 @@ router.post('/create', async (req, res) => {
    if (!contact || !number || !description) {
       res.send('Fields can not be empty');
    }
-   const newContact = { contact, number, description };
+   const newContact = { contact, number, description, user_id: req.session.user_id };
    await pool.query('INSERT INTO contacts set ?', [newContact]);
    req.flash('success', 'Contact created!');
    res.redirect('/contacts');
 });
 
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', authMiddleware, async (req, res) => {
    const { id } = req.params;
    const values = await pool.query('SELECT * FROM contacts WHERE id = ?', id);
    console.log(values[0]);
