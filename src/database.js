@@ -17,8 +17,11 @@ pool.getConnection((err, connection) => {
          console.log('DATABASE HAS REFUSED');
       }
    }
-   if (connection) connection.release();
-   console.log('DB CONNECTED');
+
+   if (connection) {
+      connection.release();
+      console.log('DB CONNECTED');
+   }
 });
 
 pool.query = promisify(pool.query);
